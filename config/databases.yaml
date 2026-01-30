@@ -1,5 +1,5 @@
 # Global DDL configuration (unified for all databases)
-ddlPath: ./ddl/local
+ddlPath: ./ddl/foreign_trade.sql
 
 databases:
   - name: local
