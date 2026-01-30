@@ -1,0 +1,26 @@
+# Global DDL configuration (unified for all databases)
+ddlPath: ./ddl/local
+
+databases:
+  - name: local
+    host: localhost
+    port: 3306
+    database: foreign_trade
+    user: root
+    password: root123
+    connectionLimit: 10
+  - name: prod
+    host: 192.168.10.25
+    port: 3306
+    database: foreign_trade
+    user: root
+    password: Wykj.123
+    connectionLimit: 10
+
+  - name: vpn-prod
+    host: 172.16.1.212
+    port: 3306
+    database: foreign_trade
+    user: root
+    password: Wykj.123
+    connectionLimit: 10

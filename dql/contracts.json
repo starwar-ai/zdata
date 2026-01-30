@@ -1,0 +1,102 @@
+[
+  {
+    "id": "listAllPurchaseContracts",
+    "name": "查询所有采购合同",
+    "description": "获取所有采购合同列表",
+    "category": "contracts",
+    "sql": "SELECT id, code, vender_name, purchase_time, contract_status, audit_status, total_quantity, total_amount, currency, purchase_user_name, remark, create_time FROM scm_purchase_contract WHERE deleted = 0 ORDER BY purchase_time DESC",
+    "params": []
+  },
+  {
+    "id": "searchPurchaseContractsByTimeAndSuppliers",
+    "name": "按时间段和指定供应商查询采购合同",
+    "description": "根据时间范围和29个指定供应商名称查询所有采购合同",
+    "category": "contracts",
+    "sql": "SELECT id, code, tax_rate, vender_name, purchase_time, contract_status, audit_status, total_quantity, CAST(total_amount AS CHAR) as total_amount, CAST(total_amount_rmb AS CHAR) as total_amount_rmb, currency, purchase_user_name, remark, create_time FROM scm_purchase_contract WHERE deleted = 0 AND purchase_time >= ? AND purchase_time <= ? AND (vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ? OR vender_name LIKE ?) ORDER BY purchase_time DESC",
+    "params": [
+      "2025-01-01",
+      "2025-12-31",
+      "%山东铁华实业有限公司%",
+      "%宁波翠科机械有限公司%",
+      "%浙江缙轩国际贸易有限公司%",
+      "%宁波市北仑富斯特旅游用品有限公司%",
+      "%宁波汉远照明有限公司%",
+      "%ACKWAY ENTERPRISE CO. LTD%",
+      "%大连市优思迈国际贸易有限公司%",
+      "%余姚市四季旅游用品有限公司%",
+      "%施維衣爾有限公司%",
+      "%临海市瑞欣休闲用品有限公司%",
+      "%深圳市纬信科技有限公司%",
+      "%上海恳大实业有限公司%",
+      "%Wincy Technology Co..Ltd%",
+      "%余姚市对外贸易有限公司%",
+      "%深圳市宠宝宝科技有限公司%",
+      "%临海市君豪休闲用品有限公司%",
+      "%YOUNGSUN GROUP LIMITED%",
+      "%北京鼎桥进出口贸易有限公司%",
+      "%泉州优比服饰有限公司%",
+      "%金华市森艺休闲用品有限公司%",
+      "%扬州伊华科技有限公司%",
+      "%杭州杰云进出口有限公司%",
+      "%阜阳市金木工艺品有限公司%",
+      "%河北金桦元贸易有限公司%",
+      "%宁波腾光进出口有限公司%",
+      "%青岛朗威机械有限公司%",
+      "%山东忠健智能制造有限公司%",
+      "%义乌申地进出口有限公司%",
+      "%Gardexpert Global Trade Co.. Limited%"
+    ]
+  },
+  {
+    "id": "listPurchaseContractsWithoutRmbAmount",
+    "name": "查询total_amount_rmb无值的采购合同",
+    "description": "获取所有total_amount_rmb字段为空的采购合同列表",
+    "category": "contracts",
+    "sql": "SELECT id, code, CAST(total_amount AS CHAR) as total_amount, purchase_time, tax_rate, CAST(total_amount_rmb AS CHAR) as total_amount_rmb FROM scm_purchase_contract WHERE deleted = 0 AND YEAR(purchase_time) = 2025 AND (total_amount_rmb IS NULL OR total_amount_rmb = '' OR total_amount_rmb = 'null' OR total_amount_rmb -> '$.amount' IS NULL OR JSON_UNQUOTE(total_amount_rmb -> '$.amount') = 'null') ORDER BY purchase_time DESC",
+    "params": []
+  },
+  {
+    "id": "listPurchaseContractsByYear",
+    "name": "按年份查询采购合同",
+    "description": "根据时间范围查询一年内的采购合同，返回基本信息",
+    "category": "contracts",
+    "sql": "SELECT id, code, CAST(total_amount AS CHAR) as total_amount, purchase_time, tax_rate FROM scm_purchase_contract WHERE deleted = 0 AND purchase_time >= ? AND purchase_time <= ? ORDER BY purchase_time DESC",
+    "params": [
+      "2025-01-01",
+      "2025-12-31"
+    ]
+  },
+  {
+    "id": "listPurchaseContractsWithZeroRmbAmount",
+    "name": "查询指定时间范围内采购金额(RMB)为0的采购合同",
+    "description": "获取指定时间段内total_amount_rmb字段金额为0的采购合同列表",
+    "category": "contracts",
+    "sql": "SELECT id, code, vender_name, CAST(total_amount AS CHAR) as total_amount, purchase_time, tax_rate, CAST(total_amount_rmb AS CHAR) as total_amount_rmb, currency, purchase_user_name, contract_status, audit_status FROM scm_purchase_contract WHERE deleted = 0 AND purchase_time >= ? AND purchase_time <= ? AND total_amount_rmb IS NOT NULL AND total_amount_rmb != '' AND total_amount_rmb != 'null' AND (JSON_EXTRACT(total_amount_rmb, '$.amount') = 0 OR CAST(JSON_UNQUOTE(JSON_EXTRACT(total_amount_rmb, '$.amount')) AS DECIMAL(19,6)) = 0) ORDER BY purchase_time DESC",
+    "params": [
+      "2025-01-01",
+      "2025-12-31"
+    ]
+  },
+  {
+    "id": "listAdvantageProductSalesByTimeRange",
+    "name": "查询指定时间内的优势产品销售记录",
+    "description": "根据时间范围查询所有优势产品的销售合同明细记录",
+    "category": "contracts",
+    "sql": "SELECT sci.id, sci.contract_id, sci.contract_code, sc.sale_contract_date, sci.sku_id, sci.sku_code, sci.name, sci.name_eng, sci.csku_code, ps.advantage_flag, sci.quantity, CAST(sci.unit_price AS CHAR) as unit_price, CAST(sci.total_sale_amount AS CHAR) as total_sale_amount, sc.currency, sc.cust_name, sc.cust_country_name, CAST(sc.sales AS CHAR) as sales, sci.vender_name, sci.create_time FROM sms_sale_contract_item sci INNER JOIN sms_sale_contract sc ON sci.contract_id = sc.id INNER JOIN pms_sku ps ON sci.sku_id = ps.id WHERE sci.deleted = 0 AND sc.deleted = 0 AND ps.deleted = 0 AND ps.advantage_flag = 1 AND sc.sale_contract_date >= ? AND sc.sale_contract_date <= ? ORDER BY sc.sale_contract_date DESC, sci.id DESC",
+    "params": [
+      "2025-01-01",
+      "2026-01-01"
+    ]
+  },
+  {
+    "id": "listAdvantageProductPurchasesByTimeRange",
+    "name": "查询指定时间内的优势产品采购记录",
+    "description": "根据时间范围查询所有优势产品的采购合同明细记录",
+    "category": "contracts",
+    "sql": "SELECT pci.id, pci.purchase_contract_id, pci.purchase_contract_code, pc.purchase_time, pci.sku_id, pci.sku_code, pci.sku_name, pci.csku_code, ps.advantage_flag, pci.quantity, CAST(pci.unit_price AS CHAR) as unit_price, CAST(pci.total_price AS CHAR) as total_price, CAST(pci.with_tax_price AS CHAR) as with_tax_price, CAST(pci.total_price_rmb AS CHAR) as total_price_rmb, pci.currency, pc.vender_name, pci.purchase_user_name, pci.tax_rate, pci.sale_contract_code, pci.cust_name, pci.create_time FROM scm_purchase_contract_item pci INNER JOIN scm_purchase_contract pc ON pci.purchase_contract_id = pc.id INNER JOIN pms_sku ps ON pci.sku_id = ps.id WHERE pci.deleted = 0 AND pc.deleted = 0 AND ps.deleted = 0 AND ps.advantage_flag = 1 AND pc.purchase_time >= ? AND pc.purchase_time <= ? ORDER BY pc.purchase_time DESC, pci.id DESC",
+    "params": [
+      "2025-01-01",
+      "2026-01-01"
+    ]
+  }
+]
