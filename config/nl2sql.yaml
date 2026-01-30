@@ -1,0 +1,38 @@
+# Natural Language to SQL Configuration
+
+# Model settings
+model:
+  default: opus  # opus | sonnet
+  opus_id: claude-opus-4-5-20251101
+  sonnet_id: claude-sonnet-4-5-20250929
+  max_tokens: 4096
+  temperature: 0.0  # Deterministic for SQL generation
+
+# DDL optimization
+ddl:
+  default_format: erd  # erd | compact | minimal
+  include_indexes: true
+  include_foreign_keys: true
+
+# Output preferences
+output:
+  default_format: full  # sql-only | full | json
+  syntax_highlight: true
+  color_scheme: monokai
+
+# Thinking mode
+thinking:
+  enabled: true
+  show_by_default: true
+  style: dim cyan
+
+# API configuration
+api:
+  timeout: 60  # seconds
+  retry_attempts: 3
+  retry_delay: 1  # seconds
+
+# Logging
+logging:
+  level: INFO  # DEBUG | INFO | WARNING | ERROR
+  file: logs/nl2sql.log
